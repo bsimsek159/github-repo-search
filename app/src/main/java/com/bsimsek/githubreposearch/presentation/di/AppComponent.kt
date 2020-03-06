@@ -9,7 +9,7 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [(AndroidInjectionModule::class), (AppModule::class),
-    (NetworkModule::class), (RepositoryModule::class), (ActivityBuilder::class)])
+    (NetworkModule::class), (RepositoryModule::class), (ActivityModule::class)])
 
 interface AppComponent {
     fun inject(app: GitHubSearchApp)

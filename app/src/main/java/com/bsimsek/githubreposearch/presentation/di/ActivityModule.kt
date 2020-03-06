@@ -5,7 +5,7 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
 @Module
-abstract class ActivityBuilder {
-    @ContributesAndroidInjector(modules = [(GithubRepoSearchActivityModule::class), (GithubReposFragmentModule::class)])
+abstract class ActivityModule {
+    @ContributesAndroidInjector(modules = [(GithubReposFragmentProvider::class)])
     internal abstract fun bindMainActivity(): MainActivity
 }

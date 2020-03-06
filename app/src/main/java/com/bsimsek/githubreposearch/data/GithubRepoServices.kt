@@ -4,12 +4,16 @@ import com.bsimsek.githubreposearch.domain.GithubRepoResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface GithubRepoServices {
     companion object {
-        const val SEARCH_REPO_QUERY: String = ("search/repositories?q={query}+language:assembly&sort=stars&order=desc")
+        const val SEARCH_REPO_QUERY: String = ("search/repositories")
     }
 
     @GET(SEARCH_REPO_QUERY)
-    suspend fun getRepos(@Path("query") query: String): Response<GithubRepoResponse>
+    suspend fun getRepos(@Query("q") query: String,
+                         @Query("sort") sort: String,
+                         @Query("order") order: String
+                         ): Response<GithubRepoResponse>
 }
