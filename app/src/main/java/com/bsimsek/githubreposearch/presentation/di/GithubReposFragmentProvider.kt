@@ -1,6 +1,6 @@
 package com.bsimsek.githubreposearch.presentation.di
 
-import com.bsimsek.githubreposearch.GithubRepoSearchFragment
+import com.bsimsek.githubreposearch.presentation.ui.GithubRepoSearchFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

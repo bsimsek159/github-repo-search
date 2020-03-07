@@ -25,6 +25,13 @@ abstract class BaseFragment<V : BaseViewModel<BaseUiState>> : Fragment() {
         return inflater.inflate(getLayoutRes(), container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+    }
+
+    open fun initView() {}
+
     interface Callback {
         fun onFragmentAttached()
         fun onFragmentDetached(tag: String)

@@ -10,12 +10,12 @@ data class GithubRepo(
     @SerializedName("full_name")
     val full_name: String ? = null,
     @SerializedName("owner")
-    val owner: Owner
+    val owner: Owner? = null
 )
 
 data class Owner(
     @SerializedName("login")
-    val loginName: String,
+    val loginName: String? = null,
     @SerializedName("avatar_url")
     val avatar_url: String? = null,
     @SerializedName("url")

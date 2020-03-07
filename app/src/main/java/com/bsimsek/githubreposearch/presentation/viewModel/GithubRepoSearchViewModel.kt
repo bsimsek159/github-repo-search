@@ -1,6 +1,5 @@
 package com.bsimsek.githubreposearch.presentation.viewModel
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.bsimsek.githubreposearch.domain.GetReposUseCase
 import com.bsimsek.githubreposearch.presentation.base.BaseUiState
@@ -11,13 +10,19 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class GithubRepoSearchViewModel @Inject constructor(val getRepos : GetReposUseCase) : BaseViewModel<BaseUiState>() {
+class GithubRepoSearchViewModel @Inject constructor(private val getRepos : GetReposUseCase) : BaseViewModel<BaseUiState>() {
 
     fun getRepos(query: String) {
-        mUiState.value = BaseUiState.loading()
+        mUiState.value = BaseUiState.Loading()
         viewModelScope.launch(Dispatchers.IO) {
             getRepos.getRepos(query).collect {
-                withContext(Dispatchers.Main) {Log.d("aaa", it?.get(0)?.full_name.toString())}
+                withContext(Dispatchers.Main) {
+                    if (it.isNullOrEmpty()) {
+                        mUiState.value = BaseUiState.Fail(errorMessage = "No item found")
+                    } else {
+                        mUiState.value = BaseUiState.Success(it)
+                    }
+                }
             }
         }
     }

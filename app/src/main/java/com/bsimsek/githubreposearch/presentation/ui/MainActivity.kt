@@ -1,8 +1,7 @@
-package com.bsimsek.githubreposearch.presentation
+package com.bsimsek.githubreposearch.presentation.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.bsimsek.githubreposearch.GithubRepoSearchFragment
 import com.bsimsek.githubreposearch.R
 import com.bsimsek.githubreposearch.presentation.base.BaseActivity
 import dagger.android.AndroidInjector
@@ -22,6 +21,4 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector {
         setContentView(R.layout.activity_main)
         supportFragmentManager.beginTransaction().replace(R.id.container, GithubRepoSearchFragment()).commit()
     }
-
-
 }
