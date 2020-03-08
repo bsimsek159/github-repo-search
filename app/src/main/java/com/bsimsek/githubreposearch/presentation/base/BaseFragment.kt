@@ -8,9 +8,10 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import com.bsimsek.githubreposearch.core.createProgress
+import com.bsimsek.githubreposearch.data.network.DataHolder
 import dagger.android.support.AndroidSupportInjection
 
-abstract class BaseFragment<V : BaseViewModel<BaseUiState>> : Fragment() {
+abstract class BaseFragment<V : BaseViewModel<DataHolder>> : Fragment() {
     @LayoutRes
     abstract fun getLayoutRes(): Int
     lateinit var mViewModel: V

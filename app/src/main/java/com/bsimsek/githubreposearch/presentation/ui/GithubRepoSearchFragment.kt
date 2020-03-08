@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -13,8 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bsimsek.githubreposearch.R
 import com.bsimsek.githubreposearch.core.setup
 import com.bsimsek.githubreposearch.data.model.GithubRepo
+import com.bsimsek.githubreposearch.data.network.DataHolder
 import com.bsimsek.githubreposearch.presentation.base.BaseFragment
-import com.bsimsek.githubreposearch.presentation.base.BaseUiState
 import com.bsimsek.githubreposearch.presentation.viewModel.GithubRepoSearchViewModel
 import kotlinx.android.synthetic.main.fragment_github_repo_search.*
 import javax.inject.Inject
@@ -47,9 +48,10 @@ class GithubRepoSearchFragment : BaseFragment<GithubRepoSearchViewModel>() {
     private fun observeData() {
         getViewModel().uiState.observe(this, Observer {
             when (it) {
-                is BaseUiState.Loading -> showBlockingPane()
-                is BaseUiState.Success<*> -> {
+                is DataHolder.Loading -> showBlockingPane()
+                is DataHolder.Success<*> -> {
                     hideBlockingPane()
+                    setUiState(true)
                     val githubRepos = ArrayList<GithubRepo>()
                     if (it.data is ArrayList<*>) {
                         it.data.forEach { item ->
@@ -60,9 +62,10 @@ class GithubRepoSearchFragment : BaseFragment<GithubRepoSearchViewModel>() {
                     }
                     adapter.updateItems(githubRepos)
                 }
-                is BaseUiState.Fail -> {
+                is DataHolder.Fail -> {
                     hideBlockingPane()
-                    Toast.makeText(requireContext(), it.errorMessage, Toast.LENGTH_SHORT).show()
+                    setUiState(false)
+                    tvEmptyResult.text = resources.getString(R.string.empty_search_result_text)
                 }
             }
         })
@@ -78,6 +81,11 @@ class GithubRepoSearchFragment : BaseFragment<GithubRepoSearchViewModel>() {
         }
         rvGithubRepo.setup(context = requireContext(), adapter = adapter)
         rvGithubRepo.addItemDecoration(decorator)
+    }
+
+    private fun setUiState(success: Boolean) {
+        rvGithubRepo.isVisible = success
+        tvEmptyResult.isVisible = !success
     }
 
     private fun setSearchListener() {

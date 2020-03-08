@@ -1,30 +1,32 @@
 package com.bsimsek.githubreposearch.data.repo
 
-import android.util.Log
 import com.bsimsek.githubreposearch.data.network.DataHolder
 import com.bsimsek.githubreposearch.data.network.NoInternetException
 import org.json.JSONObject
 import retrofit2.Response
 import java.io.IOException
+import javax.inject.Singleton
 
+@Singleton
 open class BaseRepositoryImpl {
 
-    suspend fun <T : Any> handleApiCall(call: suspend () -> Response<T>, errorContext: String): T? {
+    suspend fun <T : Any> handleApiCall(call: suspend () -> Response<T>, errorContext: String): DataHolder? {
 
-        val result: DataHolder<T> = getApiResult(call)
-        var data: T? = null
+        val result: DataHolder = getApiResult(call)
+        var data: DataHolder? = null
 
         when (result) {
-            is DataHolder.Success -> data = result.data
-            is DataHolder.Fail -> Log.e("Error", "${result.e}")
-            is DataHolder.NoInternetConnection -> Log.e("NoInternetConnection", "No Internet Connection")
+            is DataHolder.Loading -> DataHolder.Loading
+            is DataHolder.Success<*> -> data = DataHolder.Success(result.data)
+            is DataHolder.Fail -> DataHolder.Fail(result.e)
+            is DataHolder.NoInternetConnection -> DataHolder.Fail(NoInternetException())
         }
 
         return data
     }
 
-    private suspend fun <T : Any> getApiResult(call: suspend () -> Response<T>): DataHolder<T> {
-        val result: DataHolder<T>
+    private suspend fun <T : Any> getApiResult(call: suspend () -> Response<T>): DataHolder {
+        val result: DataHolder
         result = try {
             val response = call.invoke()
             if (response.isSuccessful)

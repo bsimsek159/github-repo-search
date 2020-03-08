@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Github Repo Search</string>
+    <string name="empty_search_result_text">No matched repository!</string>
 </resources>

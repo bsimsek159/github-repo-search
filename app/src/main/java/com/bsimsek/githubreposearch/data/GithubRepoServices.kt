@@ -12,7 +12,7 @@ interface GithubRepoServices {
     }
 
     @GET(SEARCH_REPO_QUERY)
-    suspend fun getRepos(@Query("q") query: String,
+    suspend fun getRepos(@Query("q") query: String? = null,
                          @Query("sort") sort: String,
                          @Query("order") order: String
                          ): Response<GithubRepoResponse>
