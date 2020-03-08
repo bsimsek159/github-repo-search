@@ -1,16 +1,11 @@
-
-
 package com.bsimsek.githubreposearch.presentation.di
 
+import com.bsimsek.githubreposearch.presentation.ui.MainActivity
 import dagger.Module
-
-
-/**
- * Created by Ahmed Atwa on 10/19/18.
- */
+import dagger.android.ContributesAndroidInjector
 
 @Module
-class MainActivityModule {
-
-
+abstract class MainActivityModule {
+    @ContributesAndroidInjector(modules = [(GithubReposFragmentProvider::class)])
+    internal abstract fun bindMainActivity(): MainActivity
 }

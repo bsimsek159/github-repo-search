@@ -32,7 +32,7 @@ class GithubRepoAdapter @Inject constructor(
         }
     }
 
-    fun clearItems() {
+    private fun clearItems() {
         repoList.clear()
     }
 

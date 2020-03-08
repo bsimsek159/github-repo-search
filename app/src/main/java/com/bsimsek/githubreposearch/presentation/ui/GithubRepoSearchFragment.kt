@@ -3,6 +3,7 @@ package com.bsimsek.githubreposearch.presentation.ui
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -26,7 +27,7 @@ class GithubRepoSearchFragment : BaseFragment<GithubRepoSearchViewModel>() {
     @Inject
     lateinit var adapter: GithubRepoAdapter
 
-    private var itemClickListener : (View, GithubRepo) -> Unit = { _: View, item: GithubRepo ->
+    private var itemClickListener: (View, GithubRepo) -> Unit = { _: View, item: GithubRepo ->
         Toast.makeText(requireContext(), item.owner?.loginName, Toast.LENGTH_SHORT).show()
     }
 
@@ -38,18 +39,20 @@ class GithubRepoSearchFragment : BaseFragment<GithubRepoSearchViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getViewModel().getRepos("mvvm")
+
         observeData()
+        setSearchListener()
     }
 
     private fun observeData() {
         getViewModel().uiState.observe(this, Observer {
             when (it) {
-                is BaseUiState.Loading -> {}
+                is BaseUiState.Loading -> showBlockingPane()
                 is BaseUiState.Success<*> -> {
-                   val githubRepos = ArrayList<GithubRepo>()
+                    hideBlockingPane()
+                    val githubRepos = ArrayList<GithubRepo>()
                     if (it.data is ArrayList<*>) {
-                        it.data.forEach {item ->
+                        it.data.forEach { item ->
                             if (item is GithubRepo) {
                                 githubRepos.add(item)
                             }
@@ -57,19 +60,39 @@ class GithubRepoSearchFragment : BaseFragment<GithubRepoSearchViewModel>() {
                     }
                     adapter.updateItems(githubRepos)
                 }
+                is BaseUiState.Fail -> {
+                    hideBlockingPane()
+                    Toast.makeText(requireContext(), it.errorMessage, Toast.LENGTH_SHORT).show()
+                }
             }
         })
     }
 
     override fun initView() {
         adapter.itemClickListener = itemClickListener
-        val decorator = DividerItemDecoration(requireContext(),LinearLayoutManager.VERTICAL)
-        ContextCompat.getDrawable(requireContext(),R.drawable.divider)?.let {
+        val decorator = DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
+        ContextCompat.getDrawable(requireContext(), R.drawable.divider)?.let {
             decorator.setDrawable(
                 it
             )
         }
         rvGithubRepo.setup(context = requireContext(), adapter = adapter)
         rvGithubRepo.addItemDecoration(decorator)
+    }
+
+    private fun setSearchListener() {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchView.clearFocus()
+                searchView.setQuery(query, false)
+                query?.let {
+                    if(it.isNotEmpty()) getViewModel().getRepos(it)
+                }
+                return true
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
     }
 }
