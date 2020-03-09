@@ -1,4 +1,4 @@
-package com.bsimsek.githubreposearch.presentation.base
+package com.bsimsek.githubreposearch.core.presentation.base
 
 import android.os.Bundle
 import androidx.annotation.LayoutRes

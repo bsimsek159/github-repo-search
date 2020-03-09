@@ -2,6 +2,7 @@ package com.bsimsek.githubreposearch.presentation.di
 
 import android.app.Application
 import com.bsimsek.githubreposearch.core.GitHubSearchApp
+import com.bsimsek.githubreposearch.presentation.di.modules.*
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule

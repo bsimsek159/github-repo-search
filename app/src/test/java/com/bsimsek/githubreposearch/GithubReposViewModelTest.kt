@@ -3,7 +3,7 @@ package com.bsimsek.githubreposearch
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.bsimsek.githubreposearch.data.model.GithubRepo
-import com.bsimsek.githubreposearch.data.network.DataHolder
+import com.bsimsek.githubreposearch.core.data.DataHolder
 import com.bsimsek.githubreposearch.domain.GetReposUseCase
 import com.bsimsek.githubreposearch.presentation.viewModel.GithubRepoSearchViewModel
 import com.nhaarman.mockitokotlin2.*
@@ -28,7 +28,7 @@ class GithubReposViewModelTest {
     private lateinit var viewModel: GithubRepoSearchViewModel
 
     @Mock
-    private var observer: Observer<DataHolder> = mock()
+    private var observer: Observer<DataHolder<*>> = mock()
 //
 //    val dummyQuery = "repo"
 //    val dummyRepoList = flowarrayListOf<GithubRepo>(
@@ -56,7 +56,7 @@ class GithubReposViewModelTest {
     }
 
     @Test
-    fun testLoadingState() {
+    fun testSuccessState() {
         testCoroutineRule.runWithCustomRule {
             val data = flowOf(ArrayList<GithubRepo>())
             whenever(useCase.getRepos("mvvm")).thenReturn(data)

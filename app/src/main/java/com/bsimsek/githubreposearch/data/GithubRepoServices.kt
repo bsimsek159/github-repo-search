@@ -3,7 +3,6 @@ package com.bsimsek.githubreposearch.data
 import com.bsimsek.githubreposearch.domain.GithubRepoResponse
 import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface GithubRepoServices {
@@ -15,5 +14,5 @@ interface GithubRepoServices {
     suspend fun getRepos(@Query("q") query: String? = null,
                          @Query("sort") sort: String,
                          @Query("order") order: String
-                         ): Response<GithubRepoResponse>
+                         ): Response<GithubRepoResponse?>
 }

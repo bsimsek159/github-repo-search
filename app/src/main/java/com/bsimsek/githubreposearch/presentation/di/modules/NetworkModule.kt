@@ -1,9 +1,9 @@
-package com.bsimsek.githubreposearch.presentation.di
+package com.bsimsek.githubreposearch.presentation.di.modules
 
 import android.content.Context
 import com.bsimsek.githubreposearch.core.AppConstants.Companion.BASE_URL
 import com.bsimsek.githubreposearch.data.GithubRepoServices
-import com.bsimsek.githubreposearch.data.network.RequestInterceptor
+import com.bsimsek.githubreposearch.core.data.RequestInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -17,7 +17,7 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    internal fun proviewRequestInterceptor(context: Context): RequestInterceptor{
+    internal fun proviewRequestInterceptor(context: Context): RequestInterceptor {
         return RequestInterceptor(context)
     }
 

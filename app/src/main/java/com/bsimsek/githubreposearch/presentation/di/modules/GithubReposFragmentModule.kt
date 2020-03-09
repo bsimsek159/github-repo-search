@@ -1,8 +1,8 @@
-package com.bsimsek.githubreposearch.presentation.di
+package com.bsimsek.githubreposearch.presentation.di.modules
 
 import android.content.Context
 import androidx.lifecycle.ViewModelProvider
-import com.bsimsek.githubreposearch.core.ViewModelProviderFactory
+import com.bsimsek.githubreposearch.core.presentation.ViewModelProviderFactory
 import com.bsimsek.githubreposearch.data.repo.GithubSearchRepoImpl
 import com.bsimsek.githubreposearch.domain.GetReposUseCase
 import com.bsimsek.githubreposearch.presentation.ui.GithubRepoAdapter
@@ -29,6 +29,8 @@ class GithubReposFragmentModule {
     }
 
     @Provides fun provideGithubReposFragment(viewModel: GithubRepoSearchViewModel) : ViewModelProvider.Factory {
-        return ViewModelProviderFactory(viewModel)
+        return ViewModelProviderFactory(
+            viewModel
+        )
     }
 }

@@ -1,4 +1,4 @@
-package com.bsimsek.githubreposearch.presentation.di
+package com.bsimsek.githubreposearch.presentation.di.modules
 
 import android.app.Application
 import android.content.Context

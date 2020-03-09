@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import com.bsimsek.githubreposearch.R
-import com.bsimsek.githubreposearch.presentation.base.BaseActivity
+import com.bsimsek.githubreposearch.core.presentation.base.BaseActivity
 
 class SplashActivity : BaseActivity() {
     override fun getLayoutRes(): Int = R.layout.splash_screen

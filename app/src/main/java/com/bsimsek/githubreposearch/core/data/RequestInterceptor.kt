@@ -1,4 +1,4 @@
-package com.bsimsek.githubreposearch.data.network
+package com.bsimsek.githubreposearch.core.data
 
 import android.content.Context
 import android.net.ConnectivityManager

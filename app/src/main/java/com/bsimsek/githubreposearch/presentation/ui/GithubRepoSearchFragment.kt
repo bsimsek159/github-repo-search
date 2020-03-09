@@ -12,10 +12,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bsimsek.githubreposearch.R
-import com.bsimsek.githubreposearch.core.setup
+import com.bsimsek.githubreposearch.core.presentation.extensions.setup
 import com.bsimsek.githubreposearch.data.model.GithubRepo
-import com.bsimsek.githubreposearch.data.network.DataHolder
-import com.bsimsek.githubreposearch.presentation.base.BaseFragment
+import com.bsimsek.githubreposearch.core.data.DataHolder
+import com.bsimsek.githubreposearch.core.presentation.base.BaseFragment
 import com.bsimsek.githubreposearch.presentation.viewModel.GithubRepoSearchViewModel
 import kotlinx.android.synthetic.main.fragment_github_repo_search.*
 import javax.inject.Inject
@@ -49,7 +49,7 @@ class GithubRepoSearchFragment : BaseFragment<GithubRepoSearchViewModel>() {
         getViewModel().uiState.observe(this, Observer {
             when (it) {
                 is DataHolder.Loading -> showBlockingPane()
-                is DataHolder.Success<*> -> {
+                is DataHolder.Success -> {
                     hideBlockingPane()
                     setUiState(true)
                     val githubRepos = ArrayList<GithubRepo>()

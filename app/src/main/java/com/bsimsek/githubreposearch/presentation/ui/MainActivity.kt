@@ -3,7 +3,7 @@ package com.bsimsek.githubreposearch.presentation.ui
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.bsimsek.githubreposearch.R
-import com.bsimsek.githubreposearch.presentation.base.BaseActivity
+import com.bsimsek.githubreposearch.core.presentation.base.BaseActivity
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector

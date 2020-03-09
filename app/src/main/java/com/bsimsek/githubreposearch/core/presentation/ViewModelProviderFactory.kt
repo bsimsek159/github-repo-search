@@ -1,6 +1,4 @@
-
-
-package com.bsimsek.githubreposearch.core
+package com.bsimsek.githubreposearch.core.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

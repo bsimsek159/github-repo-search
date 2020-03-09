@@ -1,4 +1,4 @@
-package com.bsimsek.githubreposearch.presentation.di
+package com.bsimsek.githubreposearch.presentation.di.modules
 
 import com.bsimsek.githubreposearch.data.GithubRepoServices
 import com.bsimsek.githubreposearch.data.repo.GithubSearchRepoImpl

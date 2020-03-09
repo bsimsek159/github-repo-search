@@ -1,4 +1,4 @@
-package com.bsimsek.githubreposearch.presentation.base
+package com.bsimsek.githubreposearch.core.presentation.base
 
 import android.app.Dialog
 import android.os.Bundle
@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
-import com.bsimsek.githubreposearch.core.createProgress
-import com.bsimsek.githubreposearch.data.network.DataHolder
+import com.bsimsek.githubreposearch.core.presentation.extensions.createProgress
+import com.bsimsek.githubreposearch.core.data.DataHolder
 import dagger.android.support.AndroidSupportInjection
 
-abstract class BaseFragment<V : BaseViewModel<DataHolder>> : Fragment() {
+abstract class BaseFragment<V : BaseViewModel<DataHolder<*>>> : Fragment() {
     @LayoutRes
     abstract fun getLayoutRes(): Int
     lateinit var mViewModel: V

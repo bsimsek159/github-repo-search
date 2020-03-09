@@ -1,4 +1,4 @@
-package com.bsimsek.githubreposearch.core
+package com.bsimsek.githubreposearch.core.presentation.extensions
 
 import android.app.Activity
 import android.app.Dialog

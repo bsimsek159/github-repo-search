@@ -1,4 +1,4 @@
-package com.bsimsek.githubreposearch.presentation.di
+package com.bsimsek.githubreposearch.presentation.di.modules
 
 import com.bsimsek.githubreposearch.presentation.ui.SplashActivity
 import dagger.Module

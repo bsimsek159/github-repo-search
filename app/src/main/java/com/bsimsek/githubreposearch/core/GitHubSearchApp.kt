@@ -9,7 +9,6 @@ import dagger.android.HasActivityInjector
 import javax.inject.Inject
 
 class GitHubSearchApp : Application(), HasActivityInjector{
-
     @Inject
     lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
 
