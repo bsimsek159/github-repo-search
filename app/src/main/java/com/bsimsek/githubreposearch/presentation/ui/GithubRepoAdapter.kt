@@ -1,6 +1,5 @@
 package com.bsimsek.githubreposearch.presentation.ui
 
-import android.content.Context
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -15,16 +14,12 @@ import com.bumptech.glide.Glide
 import javax.inject.Inject
 
 class GithubRepoAdapter @Inject constructor(
-    private val repoList: MutableList<GithubRepo>,
-    val context: Context
-) :
-    RecyclerView.Adapter<GithubRepoAdapter.GithubRepoViewHolder>() {
-    private val layoutInflater = LayoutInflater.from(context)
+    private val repoList: MutableList<GithubRepo>
+) : RecyclerView.Adapter<GithubRepoAdapter.GithubRepoViewHolder>() {
     var itemClickListener: ((view: View, item: GithubRepo) -> Unit)? = null
-
     override fun getItemCount(): Int = repoList.size
 
-    fun updateItems(itemList: ArrayList<GithubRepo>) {
+    fun updateAllItems(itemList: ArrayList<GithubRepo>) {
         if (!itemList.isNullOrEmpty()) {
             clearItems()
             repoList.addAll(itemList)
@@ -36,8 +31,10 @@ class GithubRepoAdapter @Inject constructor(
         repoList.clear()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GithubRepoViewHolder =
-        GithubRepoViewHolder(layoutInflater.inflate(R.layout.item_github_repo, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GithubRepoViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_github_repo, parent, false)
+        return GithubRepoViewHolder(view)
+    }
 
     inner class GithubRepoViewHolder internal constructor(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
@@ -48,19 +45,21 @@ class GithubRepoAdapter @Inject constructor(
     }
 
     override fun onBindViewHolder(holder: GithubRepoViewHolder, position: Int) {
-        val avatar = repoList[position].owner?.avatar_url
-        val loginName = repoList[position].owner?.loginName
-        val repoName = repoList[position].name
+        val repo = repoList[position]
+
+        val avatar = repo.owner?.avatar_url
+        val loginName = repo.owner?.loginName
+        val repoName = repo.name
 
         avatar?.let {
-            Glide.with(context).load(Uri.parse(it)).into(holder.imgView)
+            Glide.with(holder.imgView.context).load(Uri.parse(it)).into(holder.imgView)
         }
 
-        loginName?.let { holder.tvLoginName.text = it}
+        loginName?.let { holder.tvLoginName.text = it }
         repoName?.let { holder.tvRepoName.text = it }
 
         holder.container.setOnClickListener {
-            itemClickListener?.invoke(it,repoList[position])
+            itemClickListener?.invoke(it, repo)
         }
     }
 }

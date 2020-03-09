@@ -9,8 +9,16 @@ import dagger.android.AndroidInjectionModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [(AndroidInjectionModule::class), (AppModule::class),
-    (NetworkModule::class), (RepositoryModule::class), (MainActivityModule::class), (SplashActivityModule::class)])
+@Component(
+    modules = [
+        AndroidInjectionModule::class,
+        AppModule::class,
+        NetworkModule::class,
+        RepositoryModule::class,
+        MainActivityModule::class,
+        SplashActivityModule::class
+    ]
+)
 
 interface AppComponent {
     fun inject(app: GitHubSearchApp)
@@ -18,6 +26,7 @@ interface AppComponent {
     interface Builder {
         @BindsInstance
         fun application(application: Application): Builder
+
         fun build(): AppComponent
     }
 }

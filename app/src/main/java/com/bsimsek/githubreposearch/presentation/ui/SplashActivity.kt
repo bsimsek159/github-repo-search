@@ -3,16 +3,15 @@ package com.bsimsek.githubreposearch.presentation.ui
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import androidx.appcompat.app.AppCompatActivity
 import com.bsimsek.githubreposearch.R
-import com.bsimsek.githubreposearch.core.presentation.base.BaseActivity
 
-class SplashActivity : BaseActivity() {
-    override fun getLayoutRes(): Int = R.layout.splash_screen
+class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme_Launcher)
         super.onCreate(savedInstanceState)
-        Handler().postDelayed({goToMainActivity()}, SPLASH_TIME)
+        Handler().postDelayed({ goToMainActivity() }, SPLASH_TIME)
     }
 
     private fun goToMainActivity() {
@@ -22,6 +21,6 @@ class SplashActivity : BaseActivity() {
     }
 
     companion object {
-        const val SPLASH_TIME = 500L
+        const val SPLASH_TIME = 2000L
     }
 }

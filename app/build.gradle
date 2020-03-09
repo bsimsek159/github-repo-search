@@ -45,7 +45,7 @@ dependencies {
     testImplementation "android.arch.core:core-testing:1.1.1"
 
     // Mockito
-    testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-RC3'
+    testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
     testImplementation 'org.mockito:mockito-inline:2.8.47'
 
     //coroutines

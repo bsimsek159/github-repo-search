@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class GithubRepoResponse(
     @SerializedName("total_count")
-    val total_count: Int?,
+    val totalCount: Int?,
     @SerializedName("items")
     val items: List<GithubRepo>? = null
 )

@@ -14,7 +14,7 @@ class GithubSearchRepoImpl @Inject constructor(
 ): BaseRepositoryImpl(), GithubRepoSearchRepository {
     override suspend fun fetchGithubRepos(query: String?): Flow<DataHolder<*>?> = flow {
         val result =
-            handleApiCall { githubRepoApi.getRepos(query = query, order = "stars", sort = "desc") }
+            handleApiCall { githubRepoApi.getRepos(query = query, order = QUERY_ORDER, sort = QUERY_SORT) }
         val dataHolder: DataHolder<*>?
         dataHolder =  when (result) {
             is DataHolder.Loading -> DataHolder.Loading
@@ -24,5 +24,10 @@ class GithubSearchRepoImpl @Inject constructor(
         }
 
         return@flow emit(dataHolder)
+    }
+
+    companion object {
+        const val QUERY_ORDER = "stars"
+        const val QUERY_SORT = "desc"
     }
 }

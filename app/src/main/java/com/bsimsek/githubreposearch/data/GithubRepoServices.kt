@@ -7,7 +7,7 @@ import retrofit2.http.Query
 
 interface GithubRepoServices {
     companion object {
-        const val SEARCH_REPO_QUERY: String = ("search/repositories")
+        const val SEARCH_REPO_QUERY = "search/repositories"
     }
 
     @GET(SEARCH_REPO_QUERY)

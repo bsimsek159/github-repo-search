@@ -7,15 +7,13 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bsimsek.githubreposearch.R
-import com.bsimsek.githubreposearch.core.presentation.extensions.setup
-import com.bsimsek.githubreposearch.data.model.GithubRepo
 import com.bsimsek.githubreposearch.core.data.DataHolder
 import com.bsimsek.githubreposearch.core.presentation.base.BaseFragment
+import com.bsimsek.githubreposearch.core.presentation.extensions.setup
+import com.bsimsek.githubreposearch.data.model.GithubRepo
 import com.bsimsek.githubreposearch.presentation.viewModel.GithubRepoSearchViewModel
 import kotlinx.android.synthetic.main.fragment_github_repo_search.*
 import javax.inject.Inject
@@ -23,20 +21,13 @@ import javax.inject.Inject
 class GithubRepoSearchFragment : BaseFragment<GithubRepoSearchViewModel>() {
 
     @Inject
-    internal lateinit var mViewModelFactory: ViewModelProvider.Factory
-
-    @Inject
     lateinit var adapter: GithubRepoAdapter
+
+    override val layoutRes: Int get() = R.layout.fragment_github_repo_search
 
     private var itemClickListener: (View, GithubRepo) -> Unit = { _: View, item: GithubRepo ->
         Toast.makeText(requireContext(), item.owner?.loginName, Toast.LENGTH_SHORT).show()
     }
-
-    override fun getLayoutRes(): Int =
-        R.layout.fragment_github_repo_search
-
-    override fun getViewModel(): GithubRepoSearchViewModel =
-        ViewModelProviders.of(this, mViewModelFactory).get(GithubRepoSearchViewModel::class.java)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,28 +37,20 @@ class GithubRepoSearchFragment : BaseFragment<GithubRepoSearchViewModel>() {
     }
 
     private fun observeData() {
-        getViewModel().uiState.observe(this, Observer {
+        viewModel.uiStateLiveData.observe(this, Observer {
             when (it) {
-                is DataHolder.Loading -> showBlockingPane()
-                is DataHolder.Success -> {
-                    hideBlockingPane()
-                    val githubRepos = ArrayList<GithubRepo>()
-                    if (it.data is ArrayList<*>) {
-                        if (it.data.isEmpty()) {
-                            setUiState(false)
-                            tvEmptyResult.text = resources.getString(R.string.empty_search_result_text)
-                        } else {
-                            setUiState(true)
-                            it.data.forEach { item ->
-                                if (item is GithubRepo) {
-                                    githubRepos.add(item)
-                                }
-                            }
-                        }
-                    }
-                    adapter.updateItems(githubRepos)
-                }
-                is DataHolder.Fail -> hideBlockingPane()
+                is DataHolder.Loading -> showProgress()
+                is DataHolder.Success -> hideProgress()
+                is DataHolder.Fail -> hideProgress()
+            }
+        })
+
+        viewModel.repoListLiveData.observe(this, Observer {
+            if (it.isEmpty()) {
+                updateSearchResultVisibility(false)
+            } else {
+                adapter.updateAllItems(it)
+                updateSearchResultVisibility(true)
             }
         })
     }
@@ -80,11 +63,10 @@ class GithubRepoSearchFragment : BaseFragment<GithubRepoSearchViewModel>() {
                 it
             )
         }
-        rvGithubRepo.setup(context = requireContext(), adapter = adapter)
-        rvGithubRepo.addItemDecoration(decorator)
+        rvGithubRepo.setup(context = requireContext(),decoration = decorator, adapter = adapter)
     }
 
-    private fun setUiState(success: Boolean) {
+    private fun updateSearchResultVisibility(success: Boolean) {
         rvGithubRepo.isVisible = success
         tvEmptyResult.isVisible = !success
     }
@@ -95,10 +77,11 @@ class GithubRepoSearchFragment : BaseFragment<GithubRepoSearchViewModel>() {
                 searchView.clearFocus()
                 searchView.setQuery(query, false)
                 query?.let {
-                    if(it.isNotEmpty()) getViewModel().getRepos(it)
+                    if (it.isNotEmpty()) viewModel.getRepos(it)
                 }
                 return true
             }
+
             override fun onQueryTextChange(newText: String?): Boolean {
                 return false
             }

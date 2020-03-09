@@ -8,7 +8,7 @@ data class GithubRepo(
     @SerializedName("name")
     val name: String? = null,
     @SerializedName("full_name")
-    val full_name: String ? = null,
+    val fullName: String ? = null,
     @SerializedName("owner")
     val owner: Owner? = null
 )

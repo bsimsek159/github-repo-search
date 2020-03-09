@@ -7,28 +7,45 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
-import com.bsimsek.githubreposearch.core.presentation.extensions.createProgress
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.bsimsek.githubreposearch.core.data.DataHolder
+import com.bsimsek.githubreposearch.core.presentation.extensions.createProgress
+import com.bsimsek.githubreposearch.core.presentation.extensions.lazyThreadSafetyNone
 import dagger.android.support.AndroidSupportInjection
+import java.lang.reflect.ParameterizedType
+import javax.inject.Inject
 
-abstract class BaseFragment<V : BaseViewModel<DataHolder<*>>> : Fragment() {
-    @LayoutRes
-    abstract fun getLayoutRes(): Int
-    lateinit var mViewModel: V
-    abstract fun getViewModel(): V
-
+abstract class BaseFragment<V : ViewModel> : Fragment() {
+    @get:LayoutRes
+    abstract val layoutRes: Int
     private var dialog: Dialog? = null
     private var progressDialogCount = 0
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Suppress("UNCHECKED_CAST")
+    protected open val viewModel by lazyThreadSafetyNone {
+        val persistentViewModelClass = (javaClass.genericSuperclass as ParameterizedType)
+            .actualTypeArguments[0] as Class<V>
+        return@lazyThreadSafetyNone ViewModelProviders.of(this, viewModelFactory)
+            .get(persistentViewModelClass)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
-        mViewModel = getViewModel()
         setHasOptionsMenu(false)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(getLayoutRes(), container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return inflater.inflate(layoutRes, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,7 +53,7 @@ abstract class BaseFragment<V : BaseViewModel<DataHolder<*>>> : Fragment() {
         initView()
     }
 
-    fun showBlockingPane() {
+    fun showProgress() {
         if (progressDialogCount == 0) {
             if (dialog == null) {
                 dialog = activity?.createProgress()
@@ -51,7 +68,7 @@ abstract class BaseFragment<V : BaseViewModel<DataHolder<*>>> : Fragment() {
         progressDialogCount += progressDialogCount
     }
 
-    fun hideBlockingPane() {
+    fun hideProgress() {
         progressDialogCount -= progressDialogCount
         if (progressDialogCount == 0) {
             dialog?.dismiss()
@@ -60,9 +77,4 @@ abstract class BaseFragment<V : BaseViewModel<DataHolder<*>>> : Fragment() {
     }
 
     open fun initView() {}
-
-    interface Callback {
-        fun onFragmentAttached()
-        fun onFragmentDetached(tag: String)
-    }
 }
