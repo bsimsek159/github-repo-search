@@ -17,8 +17,7 @@
         <activity android:name=".presentation.ui.MainActivity">
         </activity>
 
-        <activity android:name=".presentation.ui.SplashActivity"
-            android:theme="@style/AppTheme.SplashScreen">
+        <activity android:name=".presentation.ui.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

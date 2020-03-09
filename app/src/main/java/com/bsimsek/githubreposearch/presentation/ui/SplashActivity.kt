@@ -10,6 +10,7 @@ class SplashActivity : BaseActivity() {
     override fun getLayoutRes(): Int = R.layout.splash_screen
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme_Launcher)
         super.onCreate(savedInstanceState)
         Handler().postDelayed({goToMainActivity()}, SPLASH_TIME)
     }

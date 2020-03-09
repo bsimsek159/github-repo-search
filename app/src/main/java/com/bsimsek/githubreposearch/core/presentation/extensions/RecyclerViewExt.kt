@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 fun RecyclerView.setup(
     context: Context,
+    decoration: RecyclerView.ItemDecoration? = null,
     adapter: RecyclerView.Adapter<*>?
 ) {
     val layoutManager = LinearLayoutManager(context)
@@ -13,5 +14,8 @@ fun RecyclerView.setup(
     this.setHasFixedSize(false)
     adapter?.let {
         this.adapter = adapter
+    }
+    decoration?.let {
+        addItemDecoration(decoration)
     }
 }

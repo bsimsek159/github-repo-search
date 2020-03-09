@@ -4,8 +4,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.bsimsek.githubreposearch.data.model.GithubRepo
 import com.bsimsek.githubreposearch.core.data.DataHolder
-import com.bsimsek.githubreposearch.core.data.ApiResultException
-import com.bsimsek.githubreposearch.data.model.Owner
 import com.bsimsek.githubreposearch.domain.GetReposUseCase
 import com.bsimsek.githubreposearch.presentation.viewModel.GithubRepoSearchViewModel
 import com.nhaarman.mockitokotlin2.*
@@ -39,7 +37,7 @@ class GithubReposViewModelTest {
     fun init() {
         MockitoAnnotations.initMocks(this)
         viewModel = GithubRepoSearchViewModel(useCase).apply {
-            uiState.observeForever(observer)
+            uiStateLiveData.observeForever(observer)
         }
     }
 
