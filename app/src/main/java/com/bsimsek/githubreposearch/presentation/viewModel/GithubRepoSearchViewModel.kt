@@ -1,7 +1,6 @@
 package com.bsimsek.githubreposearch.presentation.viewModel
 
 import androidx.lifecycle.viewModelScope
-import com.bsimsek.githubreposearch.core.data.ApiResultException
 import com.bsimsek.githubreposearch.core.data.DataHolder
 import com.bsimsek.githubreposearch.domain.GetReposUseCase
 import com.bsimsek.githubreposearch.core.presentation.base.BaseViewModel
@@ -23,9 +22,6 @@ class GithubRepoSearchViewModel @Inject constructor(private val getRepos: GetRep
                         is DataHolder.Success -> mUiState.value = DataHolder.Success(it.data)
                         is DataHolder.Fail -> mUiState.value = DataHolder.Fail(it.e)
                     }
-//                    it?.let {
-//                        mUiState.value = DataHolder.Success(it)
-//                    } ?: DataHolder.Fail(ApiResultException())
                 }
             }
         }

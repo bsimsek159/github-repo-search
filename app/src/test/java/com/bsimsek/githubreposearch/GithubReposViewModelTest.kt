@@ -5,11 +5,13 @@ import androidx.lifecycle.Observer
 import com.bsimsek.githubreposearch.data.model.GithubRepo
 import com.bsimsek.githubreposearch.core.data.DataHolder
 import com.bsimsek.githubreposearch.core.data.ApiResultException
+import com.bsimsek.githubreposearch.data.model.Owner
 import com.bsimsek.githubreposearch.domain.GetReposUseCase
 import com.bsimsek.githubreposearch.presentation.viewModel.GithubRepoSearchViewModel
 import com.nhaarman.mockitokotlin2.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -53,15 +55,4 @@ class GithubReposViewModelTest {
             verify(observer).onChanged(DataHolder.Success(data))
         }
     }
-
-//    @Test
-//    fun testGetRepoFailState() {
-//        testCoroutineRule.runWithCustomRule {
-//            whenever(useCase.getRepos()).thenReturn(flowOf(DataHolder.Fail(ApiResultException())))
-//
-//            viewModel.getRepos()
-//
-//            verify(observer).onChanged(DataHolder.Fail(ApiResultException()))
-//        }
-//    }
 }
