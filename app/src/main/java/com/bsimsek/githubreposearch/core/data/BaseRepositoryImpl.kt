@@ -8,17 +8,13 @@ import javax.inject.Singleton
 @Singleton
 open class BaseRepositoryImpl {
 
-    suspend fun <T : Any> handleApiCall(call: suspend () -> Response<T?>): T? {
-        val result = getApiResult(call)
-        var data: T? = null
-        when (result) {
+    suspend fun <T : Any> handleApiCall(call: suspend () -> Response<T?>): DataHolder<T>? {
+        return when (val result = getApiResult(call)) {
             is DataHolder.Loading -> DataHolder.Loading
-            is DataHolder.Success -> data = result.data
+            is DataHolder.Success -> DataHolder.Success(result.data)
             is DataHolder.Fail -> DataHolder.Fail(result.e)
             is DataHolder.NoInternetConnection -> DataHolder.Fail(NoInternetException())
         }
-
-        return data
     }
 
     private suspend fun <T : Any> getApiResult(call: suspend () -> Response<T?>): DataHolder<T> {

@@ -1,5 +1,6 @@
 package com.bsimsek.githubreposearch
 
+import com.bsimsek.githubreposearch.core.data.DataHolder
 import com.bsimsek.githubreposearch.data.model.GithubRepo
 import com.bsimsek.githubreposearch.domain.GetReposUseCase
 import com.bsimsek.githubreposearch.domain.GithubRepoSearchRepository
@@ -21,9 +22,9 @@ class GetReposUseCaseTest {
     fun getReposSuccess() {
         runBlockingTest {
             val list = ArrayList<GithubRepo> ()
-            whenever(getReposUseCase.getRepos("")).thenReturn(flow { emit(list) })
+            whenever(getReposUseCase.getRepos("")).thenReturn(flow { emit(DataHolder.Success(list)) })
             getReposUseCase.getRepos("").collect {
-                assert(it == list)
+                assert(it == DataHolder.Success(list))
             }
         }
     }
@@ -32,7 +33,6 @@ class GetReposUseCaseTest {
     @Test
     fun getReposReturnNull() {
         runBlockingTest {
-            val list = ArrayList<GithubRepo> ()
             whenever(getReposUseCase.getRepos("")).thenReturn(flow { emit(null) })
             getReposUseCase.getRepos("").collect {
                 assert(it == null)

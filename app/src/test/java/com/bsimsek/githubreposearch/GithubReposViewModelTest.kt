@@ -4,9 +4,11 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.bsimsek.githubreposearch.data.model.GithubRepo
 import com.bsimsek.githubreposearch.core.data.DataHolder
+import com.bsimsek.githubreposearch.core.data.ApiResultException
 import com.bsimsek.githubreposearch.domain.GetReposUseCase
 import com.bsimsek.githubreposearch.presentation.viewModel.GithubRepoSearchViewModel
 import com.nhaarman.mockitokotlin2.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
 import org.junit.Rule
@@ -14,6 +16,7 @@ import org.junit.Test
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 
+@ExperimentalCoroutinesApi
 class GithubReposViewModelTest {
 
     @get:Rule
@@ -39,10 +42,10 @@ class GithubReposViewModelTest {
     }
 
     @Test
-    fun testSuccessState() {
+    fun testGetRepoSuccessState() {
         testCoroutineRule.runWithCustomRule {
             val data = ArrayList<GithubRepo>()
-            whenever(useCase.getRepos()).thenReturn(flowOf(data))
+            whenever(useCase.getRepos()).thenReturn(flowOf(DataHolder.Success(data)))
 
             viewModel.getRepos()
 
@@ -50,4 +53,15 @@ class GithubReposViewModelTest {
             verify(observer).onChanged(DataHolder.Success(data))
         }
     }
+
+//    @Test
+//    fun testGetRepoFailState() {
+//        testCoroutineRule.runWithCustomRule {
+//            whenever(useCase.getRepos()).thenReturn(flowOf(DataHolder.Fail(ApiResultException())))
+//
+//            viewModel.getRepos()
+//
+//            verify(observer).onChanged(DataHolder.Fail(ApiResultException()))
+//        }
+//    }
 }
