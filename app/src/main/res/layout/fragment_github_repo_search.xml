@@ -27,10 +27,10 @@
         android:text="@string/empty_search_result_text"
         android:gravity="center"
         android:visibility="gone"
+        android:layout_marginTop="@dimen/default_margin"
         app:layout_constraintTop_toBottomOf="@+id/searchView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintEnd_toEndOf="parent">
 
 
     </androidx.appcompat.widget.AppCompatTextView><androidx.recyclerview.widget.RecyclerView
