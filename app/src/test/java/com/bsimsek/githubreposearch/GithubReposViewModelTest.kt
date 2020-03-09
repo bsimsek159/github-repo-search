@@ -29,23 +29,6 @@ class GithubReposViewModelTest {
 
     @Mock
     private var observer: Observer<DataHolder<*>> = mock()
-//
-//    val dummyQuery = "repo"
-//    val dummyRepoList = flowarrayListOf<GithubRepo>(
-//        GithubRepo(
-//            id = 0,
-//            name = "repo1",
-//            full_name = "repo1",
-//            owner = Owner(loginName = "abc_loginName")
-//        ),
-//        GithubRepo(
-//            id = 1,
-//            name = "repo2",
-//            full_name = "repo2",
-//            owner = Owner(loginName = "def_loginName")
-//        )
-//
-//    )
 
     @Before
     fun init() {
@@ -58,16 +41,13 @@ class GithubReposViewModelTest {
     @Test
     fun testSuccessState() {
         testCoroutineRule.runWithCustomRule {
-            val data = flowOf(ArrayList<GithubRepo>())
-            whenever(useCase.getRepos("mvvm")).thenReturn(data)
+            val data = ArrayList<GithubRepo>()
+            whenever(useCase.getRepos()).thenReturn(flowOf(data))
 
-            viewModel.getRepos("mvvm")
+            viewModel.getRepos()
 
             verify(observer).onChanged(DataHolder.Loading)
-//            if (observer is DataHolder.Success<*>) {
-//
-//            }
-//            verify(observer).onChanged(DataHolder.Success(data))
+            verify(observer).onChanged(DataHolder.Success(data))
         }
     }
 }
