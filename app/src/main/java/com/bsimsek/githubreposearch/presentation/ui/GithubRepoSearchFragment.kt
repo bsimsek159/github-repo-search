@@ -51,22 +51,23 @@ class GithubRepoSearchFragment : BaseFragment<GithubRepoSearchViewModel>() {
                 is DataHolder.Loading -> showBlockingPane()
                 is DataHolder.Success -> {
                     hideBlockingPane()
-                    setUiState(true)
                     val githubRepos = ArrayList<GithubRepo>()
                     if (it.data is ArrayList<*>) {
-                        it.data.forEach { item ->
-                            if (item is GithubRepo) {
-                                githubRepos.add(item)
+                        if (it.data.isEmpty()) {
+                            setUiState(false)
+                            tvEmptyResult.text = resources.getString(R.string.empty_search_result_text)
+                        } else {
+                            setUiState(true)
+                            it.data.forEach { item ->
+                                if (item is GithubRepo) {
+                                    githubRepos.add(item)
+                                }
                             }
                         }
                     }
                     adapter.updateItems(githubRepos)
                 }
-                is DataHolder.Fail -> {
-                    hideBlockingPane()
-                    setUiState(false)
-                    tvEmptyResult.text = resources.getString(R.string.empty_search_result_text)
-                }
+                is DataHolder.Fail -> hideBlockingPane()
             }
         })
     }
