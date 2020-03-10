@@ -13,20 +13,20 @@
         app:layout_constraintStart_toStartOf="parent">
     </ImageView>
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <TextView
         android:id="@+id/tvLoginName"
         style="@style/GithubRepoNameStyle"
         app:layout_constraintTop_toTopOf="@+id/avatarImg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/avatarImg">
-    </androidx.appcompat.widget.AppCompatTextView>
+    </TextView>
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <TextView
         android:id="@+id/tvRepoName"
         style="@style/GithubRepoNameStyle"
         app:layout_constraintBottom_toBottomOf="@+id/avatarImg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/avatarImg">
-    </androidx.appcompat.widget.AppCompatTextView>
+    </TextView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

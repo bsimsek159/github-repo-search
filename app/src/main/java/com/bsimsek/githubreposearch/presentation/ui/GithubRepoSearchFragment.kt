@@ -25,8 +25,8 @@ class GithubRepoSearchFragment : BaseFragment<GithubRepoSearchViewModel>() {
 
     override val layoutRes: Int get() = R.layout.fragment_github_repo_search
 
-    private var itemClickListener: (View, GithubRepo) -> Unit = { _: View, item: GithubRepo ->
-        Toast.makeText(requireContext(), item.owner?.loginName, Toast.LENGTH_SHORT).show()
+    private var itemClickListener: (View, GithubRepo?) -> Unit = { _: View, item: GithubRepo? ->
+        Toast.makeText(requireContext(), item?.owner?.loginName, Toast.LENGTH_SHORT).show()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,7 +37,7 @@ class GithubRepoSearchFragment : BaseFragment<GithubRepoSearchViewModel>() {
     }
 
     private fun observeData() {
-        viewModel.uiStateLiveData.observe(this, Observer {
+        viewModel.uiStateLiveData.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is DataHolder.Loading -> showProgress()
                 is DataHolder.Success -> hideProgress()
@@ -45,7 +45,7 @@ class GithubRepoSearchFragment : BaseFragment<GithubRepoSearchViewModel>() {
             }
         })
 
-        viewModel.repoListLiveData.observe(this, Observer {
+        viewModel.repoListLiveData.observe(viewLifecycleOwner, Observer {
             if (it.isEmpty()) {
                 updateSearchResultVisibility(false)
             } else {
