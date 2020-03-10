@@ -31,7 +31,6 @@ class GithubRepoSearchFragment : BaseFragment<GithubRepoSearchViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         observeData()
         setSearchListener()
     }
