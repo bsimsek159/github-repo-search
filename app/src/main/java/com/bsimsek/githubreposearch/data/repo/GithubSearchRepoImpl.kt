@@ -11,20 +11,20 @@ import javax.inject.Inject
 
 class GithubSearchRepoImpl @Inject constructor(
     private val githubRepoApi: GithubRepoServices
-): BaseRepositoryImpl(), GithubRepoSearchRepository {
-    override suspend fun fetchGithubRepos(query: String?): Flow<DataHolder<*>?> = flow {
-        val result =
-            handleApiCall { githubRepoApi.getRepos(query = query, order = QUERY_ORDER, sort = QUERY_SORT) }
-        val dataHolder: DataHolder<*>?
-        dataHolder =  when (result) {
-            is DataHolder.Loading -> DataHolder.Loading
-            is DataHolder.Success -> DataHolder.Success(result.data.items as ArrayList<GithubRepo>)
-            is DataHolder.Fail -> DataHolder.Fail(result.e)
-            else -> null
-        }
-
-        return@flow emit(dataHolder)
-    }
+): BaseRepositoryImpl() {
+//    override suspend fun fetchGithubRepos(query: String): Flow<DataHolder<*>?> = flow {
+//        val result =
+//            handleApiCall { githubRepoApi.getRepos(query = query) }
+//        val dataHolder: DataHolder<*>?
+//        dataHolder =  when (result) {
+//            is DataHolder.Loading -> DataHolder.Loading
+//            is DataHolder.Success -> DataHolder.Success(result.data.items as ArrayList<GithubRepo>)
+//            is DataHolder.Fail -> DataHolder.Fail(result.e)
+//            else -> null
+//        }
+//
+//        return@flow emit(dataHolder)
+//    }
 
     companion object {
         const val QUERY_ORDER = "stars"

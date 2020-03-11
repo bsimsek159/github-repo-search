@@ -35,4 +35,5 @@ ext{
     annotationsVersion = '0.3.2'
     lifeCycleVersion = '2.2.0'
     coroutineVersion = '1.3.3'
+    roomVersion = '2.2.4'
 }

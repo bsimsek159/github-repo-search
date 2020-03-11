@@ -1,7 +1,9 @@
 package com.bsimsek.githubreposearch.data
 
+import androidx.lifecycle.LiveData
+import com.bsimsek.githubreposearch.core.data.ApiResponse
 import com.bsimsek.githubreposearch.domain.GithubRepoResponse
-import retrofit2.Response
+import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -11,8 +13,10 @@ interface GithubRepoServices {
     }
 
     @GET(SEARCH_REPO_QUERY)
-    suspend fun getRepos(@Query("q") query: String? = null,
-                         @Query("sort") sort: String,
-                         @Query("order") order: String
-                         ): Response<GithubRepoResponse?>
+    fun getRepos(@Query("q") query: String,
+                         @Query("page") page: Int
+                         ): Call<GithubRepoResponse>
+
+    @GET(SEARCH_REPO_QUERY)
+    fun getRepos(@Query("q") query: String): LiveData<ApiResponse<GithubRepoResponse>>
 }

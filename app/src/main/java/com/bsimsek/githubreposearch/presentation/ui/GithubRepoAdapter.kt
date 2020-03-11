@@ -17,9 +17,8 @@ class GithubRepoAdapter @Inject constructor(
     private lateinit var itemGithubRepoBinding: ItemGithubRepoBinding
     override fun getItemCount(): Int = repoList.size
 
-    fun updateAllItems(itemList: ArrayList<GithubRepo>) {
+    fun updateAllItems(itemList: List<GithubRepo>) {
         if (!itemList.isNullOrEmpty()) {
-            clearItems()
             repoList.addAll(itemList)
             notifyDataSetChanged()
         }

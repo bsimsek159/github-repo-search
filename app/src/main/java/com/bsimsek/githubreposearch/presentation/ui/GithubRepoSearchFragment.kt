@@ -36,20 +36,29 @@ class GithubRepoSearchFragment : BaseFragment<GithubRepoSearchViewModel>() {
     }
 
     private fun observeData() {
-        viewModel.uiStateLiveData.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is DataHolder.Loading -> showProgress()
-                is DataHolder.Success -> hideProgress()
-                is DataHolder.Fail -> hideProgress()
+        viewModel.loadMoreStatus.observe(viewLifecycleOwner, Observer {
+            if (it == null) {
+                hideProgress()
+            } else {
+                val error = it.errorMessageIfNotHandled
+                if (error != null) {
+                    Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
+                }
             }
         })
 
-        viewModel.repoListLiveData.observe(viewLifecycleOwner, Observer {
-            if (it.isEmpty()) {
-                updateSearchResultVisibility(false)
-            } else {
-                adapter.updateAllItems(it)
-                updateSearchResultVisibility(true)
+        viewModel.results.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is DataHolder.Success -> {
+                    it.data?.let {list ->
+                        if (list.isEmpty()) {
+                            updateSearchResultVisibility(false)
+                        } else {
+                            adapter.updateAllItems(list)
+                            updateSearchResultVisibility(true)
+                        }
+                    }
+                }
             }
         })
     }
@@ -76,7 +85,7 @@ class GithubRepoSearchFragment : BaseFragment<GithubRepoSearchViewModel>() {
                 searchView.clearFocus()
                 searchView.setQuery(query, false)
                 query?.let {
-                    if (it.isNotEmpty()) viewModel.getRepos(it)
+                    if (it.isNotEmpty()) viewModel.setQuery(it)
                 }
                 return true
             }
