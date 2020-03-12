@@ -10,9 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.bsimsek.githubreposearch.core.data.DataHolder
-import com.bsimsek.githubreposearch.core.presentation.extensions.createProgress
-import com.bsimsek.githubreposearch.core.presentation.extensions.lazyThreadSafetyNone
+import com.bsimsek.githubreposearch.core.extension.createProgress
+import com.bsimsek.githubreposearch.core.extension.lazyThreadSafetyNone
 import dagger.android.support.AndroidSupportInjection
 import java.lang.reflect.ParameterizedType
 import javax.inject.Inject

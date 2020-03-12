@@ -27,7 +27,8 @@ class GithubReposFragmentModule {
         return GithubRepoAdapter(ArrayList())
     }
 
-    @Provides fun provideGithubReposFragment(viewModel: GithubRepoSearchViewModel) : ViewModelProvider.Factory {
+    @Provides
+    fun provideGithubReposFragment(viewModel: GithubRepoSearchViewModel): ViewModelProvider.Factory {
         return ViewModelProviderFactory(
             viewModel
         )

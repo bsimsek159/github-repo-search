@@ -1,5 +1,7 @@
 package com.bsimsek.githubreposearch.presentation.ui
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.bsimsek.githubreposearch.R
@@ -14,6 +16,12 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector {
     @Inject
     internal lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
     override val layoutRes: Int get() = R.layout.activity_main
+
+    companion object {
+        fun getStartIntent(context: Context): Intent {
+            return Intent(context, MainActivity::class.java)
+        }
+    }
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> =
         fragmentDispatchingAndroidInjector

@@ -10,12 +10,30 @@ import javax.inject.Inject
 
 class GithubSearchRepoImpl @Inject constructor(
     private val githubRepoApi: GithubRepoServices
-): BaseRepositoryImpl(), GithubRepoSearchRepository {
-    override suspend fun fetchGithubRepos(query: String?, page: Int, perPage: Int): Flow<DataHolder<*>?> = flow {
+) : BaseRepositoryImpl(), GithubRepoSearchRepository {
+
+    companion object {
+        private const val QUERY_ORDER = "stars"
+        private const val QUERY_SORT = "desc"
+    }
+
+    override suspend fun fetchGithubRepos(
+        query: String?,
+        page: Int,
+        perPage: Int
+    ): Flow<DataHolder<*>?> = flow {
         val result =
-            handleApiCall { githubRepoApi.getRepos(query = query, order = QUERY_ORDER, sort = QUERY_SORT,page = page,perPage = perPage) }
+            handleApiCall {
+                githubRepoApi.getRepos(
+                    query = query,
+                    order = QUERY_ORDER,
+                    sort = QUERY_SORT,
+                    page = page,
+                    perPage = perPage
+                )
+            }
         val dataHolder: DataHolder<*>?
-        dataHolder =  when (result) {
+        dataHolder = when (result) {
             is DataHolder.Loading -> DataHolder.Loading
             is DataHolder.Success -> DataHolder.Success(result.data)
             is DataHolder.Fail -> DataHolder.Fail(result.e)
@@ -23,10 +41,5 @@ class GithubSearchRepoImpl @Inject constructor(
         }
 
         return@flow emit(dataHolder)
-    }
-
-    companion object {
-        const val QUERY_ORDER = "stars"
-        const val QUERY_SORT = "desc"
     }
 }

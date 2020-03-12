@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bsimsek.githubreposearch.R
 import com.bsimsek.githubreposearch.core.data.DataHolder
+import com.bsimsek.githubreposearch.core.extension.setup
 import com.bsimsek.githubreposearch.core.presentation.base.BaseFragment
-import com.bsimsek.githubreposearch.core.presentation.extensions.setup
 import com.bsimsek.githubreposearch.data.model.GithubRepo
 import com.bsimsek.githubreposearch.presentation.viewModel.GithubRepoSearchViewModel
-import com.bsimsek.githubreposearch.presentation.viewModel.GithubRepoSearchViewModel.Companion.PER_PAGE
+import com.bsimsek.githubreposearch.presentation.viewModel.GithubRepoSearchViewModel.Companion.PAGE_PER_ITEM
 import kotlinx.android.synthetic.main.fragment_github_repo_search.*
 import javax.inject.Inject
 
@@ -112,7 +112,7 @@ class GithubRepoSearchFragment : BaseFragment<GithubRepoSearchViewModel>() {
                         adapter.clearItems()
                         viewModel.run {
                             getReposByPagination(it)
-                            initPagination(it, perPage = PER_PAGE)
+                            initPagination(it, perPage = PAGE_PER_ITEM)
                         }
                     }
                 }

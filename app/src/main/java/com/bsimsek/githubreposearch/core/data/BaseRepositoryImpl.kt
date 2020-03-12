@@ -1,5 +1,6 @@
 package com.bsimsek.githubreposearch.core.data
 
+import com.bsimsek.githubreposearch.core.extension.toErrorMessage
 import retrofit2.Response
 import java.io.IOException
 import javax.inject.Singleton
@@ -22,14 +23,11 @@ open class BaseRepositoryImpl {
             if (response.isSuccessful)
                 response.body()?.let {
                     DataHolder.Success(it)
-                }?: DataHolder.Fail(ApiResultException())
+                } ?: DataHolder.Fail(EmptyApiResultException())
             else
                 DataHolder.Fail(IOException(response.toErrorMessage()))
         } catch (exception: IOException) {
-            if (exception is NoInternetException)
-                DataHolder.Fail(NoInternetException())
-            else
-                DataHolder.Fail(exception)
+            DataHolder.Fail(if (exception is NoInternetException) NoInternetException() else exception)
         }
     }
 }

@@ -1,9 +1,9 @@
-package com.bsimsek.githubreposearch.core.data
+package com.bsimsek.githubreposearch.core.extension
 
 import org.json.JSONObject
 import retrofit2.Response
 
-fun Response<*>.toErrorMessage() : String{
+fun Response<*>.toErrorMessage(): String {
     val code = this.code().toString()
     val message = try {
         val jObjError = JSONObject(this.errorBody()?.string() ?: "empty body")

@@ -1,4 +1,4 @@
-package com.bsimsek.githubreposearch.core.presentation.extensions
+package com.bsimsek.githubreposearch.core.extension
 
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager

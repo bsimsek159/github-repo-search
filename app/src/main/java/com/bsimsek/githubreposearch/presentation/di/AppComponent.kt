@@ -21,7 +21,9 @@ import javax.inject.Singleton
 )
 
 interface AppComponent {
+
     fun inject(app: GitHubSearchApp)
+
     @Component.Builder
     interface Builder {
         @BindsInstance

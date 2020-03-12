@@ -5,7 +5,7 @@ import com.bsimsek.githubreposearch.core.data.DataHolder
 import com.bsimsek.githubreposearch.data.model.GithubRepo
 import com.bsimsek.githubreposearch.domain.GetReposUseCase
 import com.bsimsek.githubreposearch.domain.GithubRepoResponse
-import com.bsimsek.githubreposearch.presentation.viewModel.GithubRepoSearchViewModel.Companion.FIRST_PAGE
+import com.bsimsek.githubreposearch.presentation.viewModel.GithubRepoSearchViewModel.Companion.PAGE_FIRST
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -30,6 +30,11 @@ class GithubRepoSearchViewModel @Inject constructor(private val getRepos: GetRep
     val uiStateLiveData: LiveData<DataHolder<*>>
         get() = _uiStateLiveData
 
+    companion object {
+        const val PAGE_FIRST = 1
+        const val PAGE_PER_ITEM = 30
+    }
+
     fun initPagination(query: String, perPage: Int) {
         queryString = query
         _repoListLiveData.addSource(_pageLiveData) { page ->
@@ -44,13 +49,13 @@ class GithubRepoSearchViewModel @Inject constructor(private val getRepos: GetRep
             val nextPage = if (query != queryString && isNewSearchSubmitted) {
                 isNewSearchSubmitted = false
                 0
-            }else pageRepo.currentPage + 1
+            } else pageRepo.currentPage + 1
             if (!pageRepo.isNextPage) return
             _pageLiveData.value = nextPage
         }
     }
 
-     fun getRepos(query: String? = null, nextPage: Int, perPage: Int) {
+    fun getRepos(query: String? = null, nextPage: Int, perPage: Int) {
         _uiStateLiveData.value = DataHolder.Loading
         viewModelScope.launch(Dispatchers.IO) {
             getRepos.getRepos(query, page = nextPage, perPage = perPage).collect {
@@ -61,7 +66,8 @@ class GithubRepoSearchViewModel @Inject constructor(private val getRepos: GetRep
                             val githubRepos = ArrayList<GithubRepo>()
                             if (it.data is GithubRepoResponse) {
                                 pageRepo.currentPage = nextPage
-                                pageRepo.isNextPage = nextPage < getRemainingPage(it.data.totalCount, perPage)
+                                pageRepo.isNextPage =
+                                    nextPage < getRemainingPage(it.data.totalCount, perPage)
                                 it.data.items.takeIf { !it.isNullOrEmpty() }?.let {
                                     githubRepos.addAll(it)
                                 }
@@ -76,7 +82,7 @@ class GithubRepoSearchViewModel @Inject constructor(private val getRepos: GetRep
         }
     }
 
-    private fun getRemainingPage(totalCount: Int, perPage: Int) : Int {
+    private fun getRemainingPage(totalCount: Int, perPage: Int): Int {
         val totalPage = ceil((totalCount.toDouble() / perPage.toDouble())).roundToInt()
         return totalPage - pageRepo.currentPage
     }
@@ -89,14 +95,9 @@ class GithubRepoSearchViewModel @Inject constructor(private val getRepos: GetRep
     }
 
     private fun resetForNewSearch() {
-        pageRepo.currentPage = FIRST_PAGE
+        pageRepo.currentPage = PAGE_FIRST
         pageRepo.isNextPage = true
     }
-
-
-    companion object {
-        const val FIRST_PAGE = 1
-        const val PER_PAGE = 30
-    }
 }
-data class PageRepo(var currentPage: Int = FIRST_PAGE, var isNextPage: Boolean = true)
+
+data class PageRepo(var currentPage: Int = PAGE_FIRST, var isNextPage: Boolean = true)

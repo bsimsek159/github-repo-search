@@ -7,7 +7,7 @@ import dagger.android.ContributesAndroidInjector
 @Module
 abstract class GithubReposFragmentProvider {
 
-    @ContributesAndroidInjector(modules =[(GithubReposFragmentModule::class)])
+    @ContributesAndroidInjector(modules = [(GithubReposFragmentModule::class)])
     internal abstract fun provideGithubRepoSearchFragmentFactory(): GithubRepoSearchFragment
 
 }

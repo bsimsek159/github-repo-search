@@ -12,7 +12,7 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    internal fun provideGithubSearchRepo(githubRepoServices: GithubRepoServices) : GithubRepoSearchRepository {
+    internal fun provideGithubSearchRepo(githubRepoServices: GithubRepoServices): GithubRepoSearchRepository {
         return GithubSearchRepoImpl(githubRepoServices)
     }
 }

@@ -1,13 +1,12 @@
 package com.bsimsek.githubreposearch.presentation.ui
 
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bsimsek.githubreposearch.core.extension.loadImage
 import com.bsimsek.githubreposearch.data.model.GithubRepo
 import com.bsimsek.githubreposearch.databinding.ItemGithubRepoBinding
-import com.bumptech.glide.Glide
 import javax.inject.Inject
 
 class GithubRepoAdapter @Inject constructor(
@@ -30,19 +29,26 @@ class GithubRepoAdapter @Inject constructor(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GithubRepoViewHolder {
-        itemGithubRepoBinding = ItemGithubRepoBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        itemGithubRepoBinding =
+            ItemGithubRepoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return GithubRepoViewHolder(itemGithubRepoBinding)
     }
 
     inner class GithubRepoViewHolder internal constructor(private val itemBinding: ItemGithubRepoBinding) :
-        RecyclerView.ViewHolder(itemBinding.root){
+        RecyclerView.ViewHolder(itemBinding.root) {
         fun bind(model: GithubRepo?) {
             with(itemBinding) {
-                model?.owner?.avatar_url?.let { Glide.with(this.avatarImg.context).load(Uri.parse(it)).into(this.avatarImg) }
-                model?.owner?.loginName?.let { this.tvLoginName.text = it }
-                model?.name?.let { this.tvRepoName.text = it }
-                this.itemContainer.setOnClickListener {
-                    itemClickListener?.invoke(it, model)
+                model?.let { repo ->
+                    repo.owner?.avatarUrl?.run {
+                        avatarImg.loadImage(this)
+                    }
+
+                    repo.owner?.loginName?.let { this.tvLoginName.text = it }
+                    repo.name?.let { this.tvRepoName.text = it }
+
+                    this.itemContainer.setOnClickListener {
+                        itemClickListener?.invoke(it, repo)
+                    }
                 }
             }
         }

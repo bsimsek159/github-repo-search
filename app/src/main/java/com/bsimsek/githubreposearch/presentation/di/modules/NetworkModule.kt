@@ -1,7 +1,7 @@
 package com.bsimsek.githubreposearch.presentation.di.modules
 
 import android.content.Context
-import com.bsimsek.githubreposearch.core.AppConstants.Companion.BASE_URL
+import com.bsimsek.githubreposearch.core.AppConstants.BASE_URL
 import com.bsimsek.githubreposearch.core.data.RequestInterceptor
 import com.bsimsek.githubreposearch.data.GithubRepoServices
 import dagger.Module
@@ -24,9 +24,9 @@ class NetworkModule {
     @Provides
     @Singleton
     internal fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
-        val httpLoggingInterceptor = HttpLoggingInterceptor()
-        httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-        return httpLoggingInterceptor
+        return HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
     }
 
     @Provides
@@ -34,18 +34,19 @@ class NetworkModule {
     internal fun provideOkHttpClient(
         requestInterceptor: RequestInterceptor,
         httpLoggingInterceptor: HttpLoggingInterceptor
-    ): OkHttpClient.Builder {
+    ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
             .addInterceptor(requestInterceptor)
+            .build()
     }
 
     @Provides
     @Singleton
-    internal fun provideRetrofit(okHttpClient: OkHttpClient.Builder): Retrofit {
+    internal fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient.build())
+            .client(okHttpClient)
             .baseUrl(BASE_URL)
             .build()
     }
