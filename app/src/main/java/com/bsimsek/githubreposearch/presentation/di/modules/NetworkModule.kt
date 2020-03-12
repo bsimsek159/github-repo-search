@@ -2,6 +2,7 @@ package com.bsimsek.githubreposearch.presentation.di.modules
 
 import android.content.Context
 import com.bsimsek.githubreposearch.core.AppConstants.Companion.BASE_URL
+import com.bsimsek.githubreposearch.core.LiveDataCallAdapterFactory
 import com.bsimsek.githubreposearch.core.data.RequestInterceptor
 import com.bsimsek.githubreposearch.data.GithubRepoServices
 import dagger.Module
@@ -9,6 +10,7 @@ import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
@@ -44,6 +46,7 @@ class NetworkModule {
     @Singleton
     internal fun provideRetrofit(okHttpClient: OkHttpClient.Builder): Retrofit {
         return Retrofit.Builder()
+            .addCallAdapterFactory(LiveDataCallAdapterFactory())
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient.build())
             .baseUrl(BASE_URL)
