@@ -4,6 +4,7 @@ import android.content.Context
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,6 +15,6 @@ class RequestInterceptor @Inject constructor(private val context: Context): Inte
         if (!context.isNetworkActive()) {
             throw NoInternetException()
         }
-        return chain.proceed(chain.request().newBuilder().build())
+        return chain.proceed(chain.request().newBuilder().header("Accept-Language", Locale.getDefault().language).build())
     }
 }

@@ -17,16 +17,16 @@ class GithubRepoAdapter @Inject constructor(
     private lateinit var itemGithubRepoBinding: ItemGithubRepoBinding
     override fun getItemCount(): Int = repoList.size
 
-    fun updateAllItems(itemList: ArrayList<GithubRepo>) {
-        if (!itemList.isNullOrEmpty()) {
-            clearItems()
-            repoList.addAll(itemList)
-            notifyDataSetChanged()
-        }
-    }
+    fun clearItems() = repoList.clear()
 
-    private fun clearItems() {
-        repoList.clear()
+    fun addItems(itemList: ArrayList<GithubRepo>) {
+        val startRange = repoList.size
+        repoList.addAll(itemList)
+        if (startRange == 0) {
+            notifyDataSetChanged()
+        } else {
+            notifyItemRangeInserted(startRange, itemList.size)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GithubRepoViewHolder {
