@@ -22,8 +22,8 @@ class GetReposUseCaseTest {
     fun getReposSuccess() {
         runBlockingTest {
             val list = ArrayList<GithubRepo> ()
-            whenever(getReposUseCase.getRepos("")).thenReturn(flow { emit(DataHolder.Success(list)) })
-            getReposUseCase.getRepos("").collect {
+            whenever(getReposUseCase.getRepos("",1,1)).thenReturn(flow { emit(DataHolder.Success(list)) })
+            getReposUseCase.getRepos("", 1, 1).collect {
                 assert(it == DataHolder.Success(list))
             }
         }
@@ -33,8 +33,8 @@ class GetReposUseCaseTest {
     @Test
     fun getReposReturnNull() {
         runBlockingTest {
-            whenever(getReposUseCase.getRepos("")).thenReturn(flow { emit(null) })
-            getReposUseCase.getRepos("").collect {
+            whenever(getReposUseCase.getRepos("",1,1)).thenReturn(flow { emit(null) })
+            getReposUseCase.getRepos("",1,1).collect {
                 assert(it == null)
             }
         }

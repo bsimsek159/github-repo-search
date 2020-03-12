@@ -45,9 +45,9 @@ class GithubReposViewModelTest {
     fun testGetRepoSuccessState() {
         testCoroutineRule.runWithCustomRule {
             val data = ArrayList<GithubRepo>()
-            whenever(useCase.getRepos()).thenReturn(flowOf(DataHolder.Success(data)))
+            whenever(useCase.getRepos(page = 1,perPage = 1)).thenReturn(flowOf(DataHolder.Success(data)))
 
-            viewModel.getRepos()
+            viewModel.getRepos(nextPage = 1,perPage = 1)
 
             verify(observer).onChanged(DataHolder.Loading)
             verify(observer).onChanged(DataHolder.Success(data))

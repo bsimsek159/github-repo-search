@@ -50,7 +50,7 @@ class GithubRepoSearchViewModel @Inject constructor(private val getRepos: GetRep
         }
     }
 
-    private fun getRepos(query: String? = null, nextPage: Int, perPage: Int) {
+     fun getRepos(query: String? = null, nextPage: Int, perPage: Int) {
         _uiStateLiveData.value = DataHolder.Loading
         viewModelScope.launch(Dispatchers.IO) {
             getRepos.getRepos(query, page = nextPage, perPage = perPage).collect {
